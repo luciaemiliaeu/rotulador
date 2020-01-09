@@ -10,9 +10,9 @@ class discretizador(object):
 		self.data, self.ddb, self.infor = self.discretize_db()
 
 	def discretize_db(self):
-		cluster = self.db.loc[:,self.attr_cluster]
+		cluster = self.db[self.attr_cluster]
 		data = self.db.drop([self.attr_cluster], axis=1)
-		values = data.get_values()    
+		values = data.values    
 		
 		ddb = []
 		infor = []
@@ -23,7 +23,7 @@ class discretizador(object):
 			elif self.metodo is "EFD":
 				disc_attb = pd.qcut(values[:,j], self.vector_num_faixas[j], labels = False, retbins = True, duplicates = 'drop')
 			ddb.append(disc_attb[0])
-			infor.append(disc_attb[1])
+			infor.append((data.columns[j],disc_attb[1]))
 
 		ddb = np.asarray(ddb, dtype = 'int32')
 		
